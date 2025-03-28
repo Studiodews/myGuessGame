@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Magic Number Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a8a5e6;
+            --success: #00b894;
+            --danger: #ff7675;
+            --light: #f8f9fa;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .game-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-content {
+            text-align: center;
+        }
+
+        .guess-form {
+            margin: 2rem 0;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #5b4bc4;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-box {
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success {
+            background: rgba(0, 184, 148, 0.15);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .error {
+            background: rgba(255, 118, 117, 0.15);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .attempt-counter {
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .how-to-play {
+            margin-top: 2rem;
+            background: rgba(108, 92, 231, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .how-to-play h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🔢 Magic Number Game</h1>
+        
+        <div class="game-content">
+            <div class="guess-form">
+                <form method="POST">
+                    <input type="number" name="guess" min="1" max="10" 
+                           placeholder="Enter your guess (1-10)" required>
+                    <button type="submit">
+                        {% if game_over %}🎮 New Game{% else %}✨ Check Guess{% endif %}
+                    </button>
+                </form>
+            </div>
+
+            {% if message %}
+            <div class="message-box {{ 'success' if game_over else 'error' }}">
+                {{ message|safe }}
+                {% if game_over %}
+                <div class="attempt-counter">Total attempts: {{ session['attempts'] }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="how-to-play">
+                <h3>🎮 How to Play</h3>
+                <p>1. Guess a number between 1 and 10<br>
+                2. Submit your guess<br>
+                3. Get instant feedback!<br>
+                4. Keep trying until you win! 🏆</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made with ❤️ by Evan</p>
+        </footer>
+    </div>
+</body>
+</html>
